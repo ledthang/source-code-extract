@@ -7,7 +7,16 @@ output directory.
 ## Build
 
 ```
-go build -o scstrip .
+go build -o scstrip ./cmd/scstrip
+```
+
+## Project layout
+
+```
+cmd/scstrip/          CLI entrypoint (flag parsing only)
+internal/scstrip/     stripping engine: #if evaluation, asmdef filtering, real-code
+                       detection — importable as a library within this module
+.github/workflows/    CI (build/vet/test) and tagged release builds
 ```
 
 ## Usage
