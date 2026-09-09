@@ -1,4 +1,4 @@
-package main
+package scstrip
 
 import (
 	"fmt"
@@ -17,6 +17,17 @@ const (
 // Model maps symbols to their state. Symbols absent from the map are OFF
 // (definitely undefined) and their branches are removed.
 type Model map[string]SymState
+
+// SetOn marks sym as ON (definitely defined). ON always wins over MAYBE,
+// regardless of call order.
+func (m Model) SetOn(sym string) { m[sym] = symOn }
+
+// SetMaybe marks sym as MAYBE (may be defined), unless it is already ON.
+func (m Model) SetMaybe(sym string) {
+	if m[sym] != symOn {
+		m[sym] = symMaybe
+	}
+}
 
 // maxMaybeSymbols caps the exhaustive reachability search per #if chain (2^n).
 const maxMaybeSymbols = 20
