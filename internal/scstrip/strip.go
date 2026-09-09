@@ -32,6 +32,8 @@ func (m Model) SetMaybe(sym string) {
 // maxMaybeSymbols caps the exhaustive reachability search per #if chain (2^n).
 const maxMaybeSymbols = 20
 
+const utf8BOM = "\uFEFF"
+
 // Strip evaluates C# conditional-compilation directives against the model.
 //   - ON symbols behave like C# defines: chains resolve to the single taken
 //     branch and the directive lines are removed.
@@ -43,8 +45,6 @@ const maxMaybeSymbols = 20
 // Original line endings are preserved. #define/#undef and other non-conditional
 // directives (#region, #pragma, ...) pass through unchanged and do not affect
 // evaluation — drive symbols via the model.
-const utf8BOM = "\uFEFF"
-
 func Strip(src string, model Model) (string, error) {
 	// A leading BOM is stripped for parsing and re-added to the output so a
 	// first-line directive is still recognized and the file's bytes are kept.
